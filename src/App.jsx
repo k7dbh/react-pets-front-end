@@ -1,6 +1,34 @@
-const App = () => {
+// page 1
+import * as petService from './services/petService';
+import { useEffect, useState } from 'react';
+import PetList from "./components/PetList/PetList";
+import PetDetail from "./components/PetDetail/PetDetail"
+
+const App = () => { //pets variable setPets method
+  const [pets, setPets] = useState([])
+  const [selected, setSelected] = useState(null)
+  
+useEffect(() => {
+  const fetchPets = async() => {
+    try{
+      const fetchedPets = await petService.index()
+      setPets(fetchedPets)
+    }catch(err){
+      console.log(err)
+    }
+  }
+  fetchPets();
+}, [])
+
+const handleSelect = (pet) => {
+  setSelected(pet)
+}
+
   return(
-    <h1>Hello world</h1>
+    <>
+    <PetList pets={pets} handleSelect={handleSelect}/>
+    <PetDetail selcted={selected}/>
+    </> 
   )
 }
 
